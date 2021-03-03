@@ -16,6 +16,7 @@
         <module>web-master</module>
         <module>openapi-gateway</module>
         <module>openapi-testservice01</module>
+        <module>openapi-testservice02</module>
     </modules>
 
 

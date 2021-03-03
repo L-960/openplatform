@@ -1,4 +1,4 @@
-package com.lxy.openplatform.testservice01;
+package com.lxy.openplatform.testservice02;
 
 
 import org.springframework.boot.SpringApplication;
@@ -7,9 +7,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class TestService01StartApp {
+public class TestService02StartApp {
 
     public static void main (String[] args){
-        SpringApplication.run(TestService01StartApp.class,args);
+        SpringApplication.run(TestService02StartApp.class,args);
     }
 }

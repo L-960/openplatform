@@ -12,6 +12,7 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 import java.util.Map;
 
 
@@ -73,6 +74,15 @@ public class RoutingFilter extends ZuulFilter {
                 //通过RequestContext设置我们的请求服务id和地址即可
                 //设置我们要访问的地址
                 currentContext.put(FilterConstants.SERVICE_ID_KEY, serviceId);
+
+                // 替换insideApiUrl请求路径中的/{}参数
+                Enumeration<String> parameterNames = request.getParameterNames();
+                while (parameterNames.hasMoreElements()){
+                    // 遍历参数名 如果匹配上{}中的名字 则替换insideApiUrl内容
+                    String paramName = parameterNames.nextElement();
+                    insideApiUrl = insideApiUrl.replace("{"+paramName+"}",request.getParameter(paramName));
+                }
+
                 currentContext.put(FilterConstants.REQUEST_URI_KEY, insideApiUrl);
 
                 return null;//返回值没有任何意义
@@ -87,8 +97,8 @@ public class RoutingFilter extends ZuulFilter {
         // 创建response
         HttpServletResponse response = currentContext.getResponse();
 
-        //response.setContentType("html/text;charset=utf-8");
-        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+
         currentContext.setResponseBody("路由失败，当前参数："+method);
 
         return null;

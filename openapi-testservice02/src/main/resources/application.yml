@@ -1,0 +1,12 @@
+server:
+  port: 30001
+spring:
+  application:
+    name: openapi-testservice02
+#告诉我们当前的项目 我们的config server 在什么地方,我们是通过注册中心获取的
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka
+  instance:
+    prefer-ip-address: true

@@ -1,7 +1,8 @@
-package com.lxy.openplatform.testservice01.controller;
+package com.lxy.openplatform.testservice02.controller;
 
 
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,7 @@ public class Test01Controller {
         return "Testservice01==>test01收到的name--->" + name;
     }
 
-    @RequestMapping("/test02/{name}")
+    @PostMapping("/test02/{name}")
     public String test02(@PathVariable String name){
 
         return "Testservice01==>test02 rest 收到的name--->" + name;
