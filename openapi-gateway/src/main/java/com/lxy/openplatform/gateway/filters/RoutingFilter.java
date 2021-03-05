@@ -1,7 +1,10 @@
 package com.lxy.openplatform.gateway.filters;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lxy.openplatform.commons.beans.BaseResultBean;
+import com.lxy.openplatform.commons.constans.ExceptionDict;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -10,6 +13,7 @@ import com.lxy.openplatform.gateway.feign.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
@@ -44,7 +48,8 @@ public class RoutingFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        return true;
+        //        return true;
+        return RequestContext.getCurrentContext().sendZuulResponse();// 根据之前的过滤器结果来决定是否启用当前过滤器
     }
 
     @Override
@@ -77,10 +82,10 @@ public class RoutingFilter extends ZuulFilter {
 
                 // 替换insideApiUrl请求路径中的/{}参数
                 Enumeration<String> parameterNames = request.getParameterNames();
-                while (parameterNames.hasMoreElements()){
+                while (parameterNames.hasMoreElements()) {
                     // 遍历参数名 如果匹配上{}中的名字 则替换insideApiUrl内容
                     String paramName = parameterNames.nextElement();
-                    insideApiUrl = insideApiUrl.replace("{"+paramName+"}",request.getParameter(paramName));
+                    insideApiUrl = insideApiUrl.replace("{" + paramName + "}", request.getParameter(paramName));
                 }
 
                 currentContext.put(FilterConstants.REQUEST_URI_KEY, insideApiUrl);
@@ -97,9 +102,16 @@ public class RoutingFilter extends ZuulFilter {
         // 创建response
         HttpServletResponse response = currentContext.getResponse();
 
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType("application/json;charset=utf-8");
 
-        currentContext.setResponseBody("路由失败，当前参数："+method);
+        BaseResultBean bean = new BaseResultBean();
+        bean.setCode(ExceptionDict.ROUTING_ERROR);
+        bean.setMsg("与["+method+"]相关的服务没有找到,请确认后再重试");
+        try {
+            currentContext.setResponseBody(objectMapper.writeValueAsString(bean));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
