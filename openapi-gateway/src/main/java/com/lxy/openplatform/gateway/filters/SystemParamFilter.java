@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lxy.openplatform.commons.beans.BaseResultBean;
 import com.lxy.openplatform.commons.constans.ExceptionDict;
 import com.lxy.openplatform.gateway.feign.CacheService;
+import com.lxy.openplatform.gateway.cache.InitSystemParam;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -15,10 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 import java.util.Set;
-
-import static com.lxy.openplatform.commons.constans.SystemParams.SYSYTEMPARAMS;
 
 /**
  * @Author Lvxy
@@ -31,6 +29,8 @@ public class SystemParamFilter extends ZuulFilter {
 
     @Autowired
     private CacheService cacheService;
+
+    private Set<Object> systemParamCache = InitSystemParam.SYSTEM_PARAM_SET_CACHE;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -61,7 +61,9 @@ public class SystemParamFilter extends ZuulFilter {
         Set<Object> sets = null;
         // 先去缓存中查询所有的系统参数,存储的是set集合
         try {
-            sets = cacheService.sMembers(SYSYTEMPARAMS);
+            //sets = cacheService.sMembers(SYSYTEMPARAMS);
+            // 替换缓存
+            sets = systemParamCache;
         } catch (Exception e) {
             e.printStackTrace();
         }

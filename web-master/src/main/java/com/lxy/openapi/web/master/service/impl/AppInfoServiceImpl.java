@@ -4,10 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lxy.openapi.web.master.mapper.AppInfoMapper;
 import com.lxy.openapi.web.master.mapper.CustomerMapper;
+import com.lxy.openapi.web.master.mq.MqUtil;
 import com.lxy.openapi.web.master.pojo.AppInfo;
 import com.lxy.openapi.web.master.pojo.Customer;
 import com.lxy.openapi.web.master.service.AppInfoService;
 import com.lxy.openapi.web.master.feign.CacheService;
+import com.lxy.openplatform.commons.APIRoutingType;
 import com.lxy.openplatform.commons.constans.SystemParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class AppInfoServiceImpl implements AppInfoService {
     @Autowired
     private CacheService cacheService;
 
+    @Autowired
+    private MqUtil mqUtil;
 
     @Override
     public List<AppInfo> getSimpleInfoList() {
@@ -41,14 +45,16 @@ public class AppInfoServiceImpl implements AppInfoService {
         appInfoMapper.updateAppInfo(info);
 
         try {
-            cacheService.hMSet(SystemParams.APPKEY_REDIS_PRE + info.getAppKey(),info);
+            cacheService.hMSet(SystemParams.APPKEY_REDIS_PRE + info.getAppKey(), info);
+            //发送mq到网关
+            mqUtil.sendMessage(SystemParams.APPKEY_REDIS_PRE + info.getAppKey(), APIRoutingType.UPDATE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public PageInfo<AppInfo> getInfoList(AppInfo info,Integer page, Integer limit) {
+    public PageInfo<AppInfo> getInfoList(AppInfo info, Integer page, Integer limit) {
         PageHelper.startPage(page, limit);
         List<AppInfo> infoList = appInfoMapper.getInfoList(info);
         return new PageInfo<>(infoList);
@@ -65,7 +71,9 @@ public class AppInfoServiceImpl implements AppInfoService {
         appInfo.setCorpName(customer == null ? null : customer.getNickname());
         appInfoMapper.add(appInfo);
         try {
-            cacheService.hMSet(SystemParams.APPKEY_REDIS_PRE + appInfo.getAppKey(),appInfo);
+            cacheService.hMSet(SystemParams.APPKEY_REDIS_PRE + appInfo.getAppKey(), appInfo);
+            //发送mq到网关
+            mqUtil.sendMessage(SystemParams.APPKEY_REDIS_PRE + appInfo.getAppKey(), APIRoutingType.ADD);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,6 +91,8 @@ public class AppInfoServiceImpl implements AppInfoService {
                 appInfoMapper.updateAppInfo(appInfo);
                 try {
                     cacheService.deleteKey(SystemParams.APPKEY_REDIS_PRE + appInfo.getAppKey());
+                    //发送mq到网关
+                    mqUtil.sendMessage(SystemParams.APPKEY_REDIS_PRE + appInfo.getAppKey(), APIRoutingType.DELETE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

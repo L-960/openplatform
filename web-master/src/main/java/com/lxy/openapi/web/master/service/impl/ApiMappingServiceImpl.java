@@ -3,9 +3,11 @@ package com.lxy.openapi.web.master.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lxy.openapi.web.master.mapper.ApiMappingMapper;
+import com.lxy.openapi.web.master.mq.MqUtil;
 import com.lxy.openapi.web.master.pojo.ApiMapping;
 import com.lxy.openapi.web.master.service.ApiMappingService;
 import com.lxy.openapi.web.master.feign.CacheService;
+import com.lxy.openplatform.commons.APIRoutingType;
 import com.lxy.openplatform.commons.constans.SystemParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class ApiMappingServiceImpl implements ApiMappingService {
     @Autowired
     private CacheService cacheService;
 
+    @Autowired
+    private MqUtil mqUtil;
+
 
     @Override
     public void addApiMapping(ApiMapping mapping) {
@@ -30,6 +35,8 @@ public class ApiMappingServiceImpl implements ApiMappingService {
             //判断当前添加的数据是不是有效的数据
             if (mapping.getState() == 1) {
                 cacheService.hMSet(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), mapping);
+                //发送mq到网关
+                mqUtil.sendMessage(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), APIRoutingType.ADD);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,9 +51,13 @@ public class ApiMappingServiceImpl implements ApiMappingService {
             if (mapping.getState() == 1) {
                 //如果更新的是其他内容(有效的) 则更新缓存中的数据
                 cacheService.hMSet(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), mapping);
+                //发送mq到网关
+                mqUtil.sendMessage(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), APIRoutingType.UPDATE);
             }else{
                 //从缓存中删除数据
                 cacheService.deleteKey(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName());
+                //发送mq到网关
+                mqUtil.sendMessage(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), APIRoutingType.DELETE);
             }
         } catch (Exception e) {
 
@@ -78,6 +89,8 @@ public class ApiMappingServiceImpl implements ApiMappingService {
                 try {
                     //从缓存中删除数据
                     cacheService.deleteKey(SystemParams.METHOD_REDIS_PRE +mapping.getGatewayApiName());
+                    //发送mq到网关
+                    mqUtil.sendMessage(SystemParams.METHOD_REDIS_PRE + mapping.getGatewayApiName(), APIRoutingType.DELETE);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

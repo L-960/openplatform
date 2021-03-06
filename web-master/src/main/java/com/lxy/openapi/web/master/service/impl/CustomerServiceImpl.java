@@ -3,9 +3,11 @@ package com.lxy.openapi.web.master.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lxy.openapi.web.master.mapper.CustomerMapper;
+import com.lxy.openapi.web.master.mq.MqUtil;
 import com.lxy.openapi.web.master.pojo.Customer;
 import com.lxy.openapi.web.master.service.CustomerService;
 import com.lxy.openapi.web.master.feign.CacheService;
+import com.lxy.openplatform.commons.APIRoutingType;
 import com.lxy.openplatform.commons.constans.SystemParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private CacheService cacheService;
 
+    //@Autowired
+    //private MqUtil mqUtil;
+
     @Override
     public void addCustomer(Customer customer) throws Exception {
         customerMapper.insertCustomer(customer);
         try {
             cacheService.hMSet(SystemParams.CUSTOMER_REDIS_PRE + customer.getId(), customer);
+            //发送mq到网关
+            //mqUtil.sendMessage(SystemParams.CUSTOMER_REDIS_PRE + customer.getId(), APIRoutingType.ADD);
         } catch (Exception e) {
         }
 
@@ -43,6 +50,8 @@ public class CustomerServiceImpl implements CustomerService {
         customerMapper.updateCustomer(customer);
         try {
             cacheService.hMSet(SystemParams.CUSTOMER_REDIS_PRE + customer.getId(), customer);
+            //发送mq到网关
+            //mqUtil.sendMessage(SystemParams.CUSTOMER_REDIS_PRE + customer.getId(), APIRoutingType.UPDATE);
         } catch (Exception e) {
         }
     }
@@ -60,6 +69,8 @@ public class CustomerServiceImpl implements CustomerService {
                 customerMapper.updateCustomer(customer);
                 try {
                     cacheService.deleteKey(SystemParams.CUSTOMER_REDIS_PRE + customer.getId());
+//                    //发送mq到网关
+//                    mqUtil.sendMessage(SystemParams.CUSTOMER_REDIS_PRE + customer.getId(), APIRoutingType.DELETE);
                 } catch (Exception e) {
                 }
             }

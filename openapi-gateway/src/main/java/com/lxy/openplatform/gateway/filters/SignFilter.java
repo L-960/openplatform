@@ -6,6 +6,7 @@ import com.lxy.openplatform.commons.beans.BaseResultBean;
 import com.lxy.openplatform.commons.constans.ExceptionDict;
 import com.lxy.openplatform.commons.constans.SystemParams;
 import com.lxy.openplatform.gateway.feign.CacheService;
+import com.lxy.openplatform.gateway.cache.InitAppKey;
 import com.lxy.openplatform.gateway.utils.Md5Util;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
@@ -35,6 +36,8 @@ public class SignFilter extends ZuulFilter {
 
     @Autowired
     private CacheService cacheService;
+
+    private Map<String, Map<String, Object>> appKeyMapCache = InitAppKey.APP_KEY_MAP_CACHE;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -85,7 +88,9 @@ public class SignFilter extends ZuulFilter {
         String appKey = request.getParameter("appKey");
         try {
             //获取appsecret
-            String appSecret = cacheService.hGet(SystemParams.APPKEY_REDIS_PRE + appKey, "appSecret");
+            // String appSecret = cacheService.hGet(SystemParams.APPKEY_REDIS_PRE + appKey, "appSecret");
+            // 替换缓存
+            String appSecret = appKeyMapCache.get(SystemParams.APPKEY_REDIS_PRE + appKey).get("appSecret").toString();
 
             if (appSecret == null || StringUtils.isEmpty(appSecret)) {
                 context.setSendZuulResponse(false);

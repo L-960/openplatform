@@ -1,11 +1,13 @@
 package com.lxy.openplatform.gateway;
 
+import com.lxy.openplatform.gateway.mq.RecevieApiRoutingStream;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 
 /**
  * @Author Lvxy
@@ -19,6 +21,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableZuulProxy
 @EnableCircuitBreaker
 @EnableFeignClients
+@EnableBinding({RecevieApiRoutingStream.class})
 public class GatewayStartApp {
     public static void main(String[] args) {
         SpringApplication.run(GatewayStartApp.class,args);

@@ -66,7 +66,7 @@ public class CacheServiceFallback implements CacheService {
     }
 
     @Override
-    public Map<Object, Object> hGetAll(String key) throws Exception {
+    public Map<String, Object> hGetAll(String key) throws Exception {
         return null;
     }
 

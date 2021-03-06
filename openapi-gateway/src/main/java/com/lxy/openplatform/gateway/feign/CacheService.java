@@ -49,7 +49,7 @@ public interface CacheService {
 
 
     @GetMapping("/cache/hgetall/{key}")
-    Map<Object, Object> hGetAll(@PathVariable String key) throws Exception;
+    Map<String, Object> hGetAll(@PathVariable String key) throws Exception;
 
     @PostMapping("/cache/hmset/{key}")
      boolean hMSet(@PathVariable String key, @RequestBody Map<Object, Object> values) throws Exception;

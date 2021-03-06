@@ -6,6 +6,7 @@ import com.lxy.openplatform.commons.beans.BaseResultBean;
 import com.lxy.openplatform.commons.constans.ExceptionDict;
 import com.lxy.openplatform.commons.constans.SystemParams;
 import com.lxy.openplatform.gateway.feign.CacheService;
+import com.lxy.openplatform.gateway.cache.InitApiRouting;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -30,6 +31,8 @@ public class IdempotentsFilter extends ZuulFilter {
 
     @Autowired
     private CacheService cacheService;
+
+    private Map<String, Map<String, Object>> cache = InitApiRouting.API_ROUTING_MAP_CACHE;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -62,11 +65,13 @@ public class IdempotentsFilter extends ZuulFilter {
         //用户要请求的服务的名字
         String method = request.getParameter("method");
 
-        Map<Object, Object> map = null;
+        Map<String, Object> map = null;
 
         // 根据method去缓存中查
         try {
-            map = cacheService.hGetAll(SystemParams.METHOD_REDIS_PRE + method);
+            //map = cacheService.hGetAll(SystemParams.METHOD_REDIS_PRE + method);
+            // 替换缓存
+            map = cache.get(SystemParams.METHOD_REDIS_PRE + method);
         } catch (Exception e) {
             e.printStackTrace();
         }

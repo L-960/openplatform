@@ -6,6 +6,7 @@ import com.lxy.openapi.web.master.bean.TableData;
 import com.lxy.openapi.web.master.service.AppInfoService;
 import com.lxy.openapi.web.master.bean.AjaxMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +41,18 @@ public class AppInfoController {
 
     @RequestMapping( "/update")
     public AjaxMessage update(AppInfo info) {
+        try {
+            appInfoService.updateAppInfo(info);
+            return new AjaxMessage(true, "修改成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new AjaxMessage(false, "修改失败");
+    }
+
+    @RequestMapping( "/update2")
+    public AjaxMessage update2(@RequestBody AppInfo info) {
+        System.out.println(info.toString());
         try {
             appInfoService.updateAppInfo(info);
             return new AjaxMessage(true, "修改成功");

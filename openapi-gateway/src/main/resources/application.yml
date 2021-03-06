@@ -10,6 +10,13 @@ eureka:
 spring:
   application:
     name: openapi-gateway
+    #rabbitmq服务器的设置应当通过config server来获取,此处为了方便代码编写,故此直接写在这里,具体的配置可以参考 cache模块的配置
+  rabbitmq:
+    host: 192.168.31.181
+    port: 5672
+    username: test
+    password: test
+    virtual-host: /test
 # 网关配置
 management:
   endpoints:
@@ -22,4 +29,6 @@ zuul:
     openapi-cache: '/*' #内存没那么大,不再写一个空服务了,配置将所有的请求都转发到openapi-cache缓存服务,目的是保证我们的zuul可以使用,但是实际开发中我们不会将请求转到缓存,可以写一个没有任何功能的测试服务来进行代理
 
 # 时间戳有效期 5分钟 后期设置在config
-TimeMillisValid: 600000
+TimeMillisValid: 60000000
+# 请求接口费用
+needfee: 2

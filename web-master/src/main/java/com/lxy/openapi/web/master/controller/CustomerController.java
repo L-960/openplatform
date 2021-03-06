@@ -7,6 +7,7 @@ import com.lxy.openapi.web.master.bean.TableData;
 import com.lxy.openapi.web.master.service.CustomerService;
 import com.lxy.openapi.web.master.bean.AjaxMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +46,17 @@ public class CustomerController {
     public AjaxMessage update(Customer Customer) {
         try {
 
+            customerService.updateCustomer(Customer);
+            return new AjaxMessage(true, "更新成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new AjaxMessage(false, "更新失败");
+    }
+
+    @RequestMapping("/update2")
+    public AjaxMessage update2(@RequestBody Customer Customer) {
+        try {
             customerService.updateCustomer(Customer);
             return new AjaxMessage(true, "更新成功");
         } catch (Exception e) {

@@ -45,8 +45,10 @@
 >
 - 端口：31000
 - SystemParamFilter 10 系统参数校验
-- TimestampFilter 20 校验请求是否过期
+- TimestampFilter 20 校验时间戳 请求是否过期
 - SignFilter 30 校验用户的请求中的签名
 - IdempotentsFilter 40 幂等性校验
-- RoutingFilter 100 转发对应服务
+- RoutingFilter 100 动态路由 转发对应服务
+- LimitFilter 110 对免费接口进行限流
+- FeeFilter 120 对收费接口进行计费
 - ServiceParamsFiltr XX 校验服务需要的参数

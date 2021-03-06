@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lxy.openplatform.commons.beans.BaseResultBean;
 import com.lxy.openplatform.commons.constans.ExceptionDict;
+import com.lxy.openplatform.gateway.cache.InitApiRouting;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
@@ -25,15 +26,17 @@ import java.util.Map;
  */
 @Component
 public class RoutingFilter extends ZuulFilter {
+
     @Autowired
     private CacheService cacheService;
+
+    private Map<String, Map<String, Object>> cache = InitApiRouting.API_ROUTING_MAP_CACHE;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     /**
      * 当前过滤器是在我们请求的时候执行的,而我们所有的请求都是转到了缓存服务,我们应该在转发之前就将请求转到另外的服务,所以是前置过滤器
-     *
-     * @return
      */
     @Override
     public String filterType() {
@@ -67,7 +70,9 @@ public class RoutingFilter extends ZuulFilter {
         try {
 
             //获取当前参数的路由映射关系map,这里面放的就是我们的标识对应的服务的id和地址等信息,根据这个信息我们可以拿到要访问的地址和服务id,然后进行服务的跳转
-            Map<Object, Object> apiMappingInfo = cacheService.hGetAll(SystemParams.METHOD_REDIS_PRE + method);
+            // Map<String, Object> apiMappingInfo = cacheService.hGetAll(SystemParams.METHOD_REDIS_PRE + method);
+            // 替换缓存
+            Map<String, Object> apiMappingInfo = cache.get(SystemParams.METHOD_REDIS_PRE + method);
 
             //参数非空校验
             if (apiMappingInfo != null && apiMappingInfo.size() > 0) {
