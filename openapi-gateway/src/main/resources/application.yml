@@ -21,3 +21,5 @@ zuul:
   routes:
     openapi-cache: '/*' #内存没那么大,不再写一个空服务了,配置将所有的请求都转发到openapi-cache缓存服务,目的是保证我们的zuul可以使用,但是实际开发中我们不会将请求转到缓存,可以写一个没有任何功能的测试服务来进行代理
 
+# 时间戳有效期 5分钟 后期设置在config
+TimeMillisValid: 600000

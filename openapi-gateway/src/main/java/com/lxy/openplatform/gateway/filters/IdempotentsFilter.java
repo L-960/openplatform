@@ -10,6 +10,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,9 @@ public class IdempotentsFilter extends ZuulFilter {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${TimeMillisValid}")
+    private Integer TimeMillisValid;
 
     @Override
     public String filterType() {
@@ -128,7 +132,7 @@ public class IdempotentsFilter extends ZuulFilter {
             // 第一次去请求，放行，存入redis
             } else {
                 //有效期不是永久的,因为一旦时间戳过期了,用户一定要传递新的时间,那么签名一定会发生变化,所以我们的有效期和时间戳的有效期保持一致即可
-                cacheService.save2Redis(SystemParams.IDEMPOTENTS_REDIS_PRE + sign, System.currentTimeMillis()+"", 60000);
+                cacheService.save2Redis(SystemParams.IDEMPOTENTS_REDIS_PRE + sign, System.currentTimeMillis()+"", TimeMillisValid);
             }
         } catch (Exception e) {
             e.printStackTrace();

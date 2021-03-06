@@ -8,6 +8,7 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,9 @@ public class TimestampFilter extends ZuulFilter {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${TimeMillisValid}")
+    private Integer TimeMillisValid;
 
     @Override
     public String filterType() {
@@ -70,7 +74,7 @@ public class TimestampFilter extends ZuulFilter {
 
             // 比较
             //如果当前服务器的时间小于用户的传递时间或者是当前服务器的时间和用户的请求时间差大于1分钟,则代表请求过期
-            if (currentTimeMillis - requestDateTime < 0 || currentTimeMillis - requestDateTime > 60000) {
+            if (currentTimeMillis - requestDateTime < 0 || currentTimeMillis - requestDateTime > TimeMillisValid) {
                 context.setSendZuulResponse(false);
                 HttpServletResponse response = context.getResponse();
                 response.setContentType("application/json;charset=utf-8");
