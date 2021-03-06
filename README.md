@@ -9,6 +9,14 @@
 
 >技术栈：ssm+springboot+springcloud+mysql+rabbitmq+redis+。。。
 
+<img src="https://github.com/L-960/openplatform/blob/master/img/1.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/2.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/3.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/4.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/5.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/6.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/7.png" width="1000" height="650" />
+<img src="https://github.com/L-960/openplatform/blob/master/img/8.png" width="1000" height="650" />
 
 ## 1.eureka模块
 >eureka服务器，单机配置，项目完成后根据需要配置eureka的高可用，也就是集群  
