@@ -71,6 +71,15 @@
             <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
         </dependency>
 
+        <!--
+        jwt鉴权
+-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>

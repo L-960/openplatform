@@ -1,0 +1,11 @@
+server:
+  port: 44000
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: author-center

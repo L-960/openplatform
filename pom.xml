@@ -17,6 +17,7 @@
         <module>openapi-gateway</module>
         <module>openapi-testservice01</module>
         <module>openapi-testservice02</module>
+        <module>author-center</module>
     </modules>
 
 
