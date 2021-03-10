@@ -18,6 +18,8 @@
         <module>openapi-testservice01</module>
         <module>openapi-testservice02</module>
         <module>author-center</module>
+        <module>openapi-order</module>
+        <module>openapi-warehouse</module>
     </modules>
 
 

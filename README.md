@@ -60,3 +60,9 @@
 - LimitFilter 110 对免费接口进行限流
 - FeeFilter 120 对收费接口进行计费
 - ServiceParamsFiltr XX 校验服务需要的参数
+
+## 5.整合分布式仓储和订单模块
+> 整合两个springboot项目，订单模块和仓储模块，仓储模块为订单模块提供服务，编写controller接口进行测试
+
+- 订单模块：openapi-order 
+- 仓储模块：openapi-warehouse

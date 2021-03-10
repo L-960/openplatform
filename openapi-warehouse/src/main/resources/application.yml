@@ -1,0 +1,16 @@
+server:
+  port: 37001
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.31.181:3306/warehouse?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: openapi-warehouse
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka

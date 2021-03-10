@@ -1,0 +1,22 @@
+server:
+  port: 37000
+  tomcat:
+    uri-encoding: UTF-8
+    util:
+      http:
+        parser:
+          HttpParser:
+            requestTargetAllow: "|{}"
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.31.181:3306/order?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: openapi-order
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka
