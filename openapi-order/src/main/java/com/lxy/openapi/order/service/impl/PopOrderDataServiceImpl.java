@@ -1,5 +1,6 @@
 package com.lxy.openapi.order.service.impl;
 
+import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import com.lxy.openapi.order.client.HouseFeignClient;
 import com.lxy.openapi.order.dao.PopOrderDataMapper;
 import com.lxy.openapi.order.dao.PopOrderItemMapper;
@@ -86,6 +87,7 @@ public class PopOrderDataServiceImpl implements PopOrderDataService {
 
     @Override
     @Transactional
+    @LcnTransaction//使用LCN进行事务的管理
     public int updateStatus(PopOrderData pojo, String exp) {
         int i = popOrderDataMapper.updateByPrimaryKeySelective(pojo);
         Long id = pojo.getId();

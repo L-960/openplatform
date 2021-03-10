@@ -1,12 +1,5 @@
 server:
   port: 37000
-  tomcat:
-    uri-encoding: UTF-8
-    util:
-      http:
-        parser:
-          HttpParser:
-            requestTargetAllow: "|{}"
 spring:
   datasource:
     username: root
@@ -20,3 +13,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:20000/eureka
+# lcn协调者地址
+tx-lcn:
+  client:
+    manager-address: localhost:12345

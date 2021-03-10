@@ -20,6 +20,7 @@
         <module>author-center</module>
         <module>openapi-order</module>
         <module>openapi-warehouse</module>
+        <module>tx-manager</module>
     </modules>
 
 

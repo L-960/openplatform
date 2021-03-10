@@ -1,0 +1,29 @@
+# *** 独立于eureka 应该配置到我的gitee仓库中 后面改吧 ***
+server:
+  port: 50000
+spring:
+  application:
+    name: tx-manager
+  datasource:
+    password: root
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # lcn协调者的数据库，表会自动创建
+    url: jdbc:mysql://192.168.31.181:3306/tx-manger?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+  # lcn协调者需要redis
+  redis:
+    host: 192.168.31.181
+    port: 6379
+    password: admin
+  # jpa 解决mysql版本冲突
+  # Hibernate 配置 MySQL dialect 解决由MySQL版本导致的问题
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+tx-lcn:
+  manager:
+    port: 12345 #50000是启动程序端口 12345是协调者端口
+    admin-key: admin
+  logger:
+    enabled: true # ps 开启日志 关闭老飘红 搞得我很难受！

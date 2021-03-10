@@ -14,3 +14,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:20000/eureka
+tx-lcn:
+  client:
+    manager-address: localhost:12345
