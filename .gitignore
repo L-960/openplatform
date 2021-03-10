@@ -1,4 +1,4 @@
-*.idea
+.idea
 **/*.idea
 
 *.iml
@@ -11,4 +11,5 @@ target
 logs
 logs/**
 
-*.txlcn
+.txlcn
+**/*.txlcn
