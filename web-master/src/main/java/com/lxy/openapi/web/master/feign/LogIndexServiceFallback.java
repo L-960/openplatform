@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 搜索服务的熔断
+ * r4日志服务的熔断
  */
 @Component
-public class SearchServiceFallback implements SearchService {
+public class LogIndexServiceFallback implements LogIndexService {
+
     @Override
     public List<Map> searchLog(String paras) {
         return null;

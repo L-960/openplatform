@@ -6,6 +6,7 @@ import com.lxy.openapi.web.master.pojo.AppInfo;
 import java.util.List;
 
 public interface AppInfoService {
+
     List<AppInfo> getSimpleInfoList();
 
     void updateAppInfo(AppInfo info);
@@ -15,5 +16,7 @@ public interface AppInfoService {
     AppInfo getInfoById(int id);
 
     void add(AppInfo appInfo);
+
     void deleteAppInfos(int[] ids);
+
 }

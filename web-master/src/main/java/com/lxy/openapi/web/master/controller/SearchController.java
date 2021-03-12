@@ -1,6 +1,6 @@
 package com.lxy.openapi.web.master.controller;
 
-import com.lxy.openapi.web.master.feign.SearchService;
+import com.lxy.openapi.web.master.feign.LogIndexService;
 import com.lxy.openapi.web.master.bean.TableData;
 import com.lxy.openapi.web.master.pojo.AppInfo;
 import com.lxy.openapi.web.master.service.AppInfoService;
@@ -14,16 +14,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 搜索服务
+ * 搜索日志服务
  */
 @RestController
 @RequestMapping("/sys/search")
 public class SearchController {
+
     @Autowired
     private AppInfoService appInfoService;
 
     @Autowired
-    private SearchService searchService;
+    private LogIndexService searchService;
 
     @RequestMapping("/table")
     public TableData search(SearchPojo criteria,int page ,int limit) {

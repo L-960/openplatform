@@ -21,6 +21,7 @@
         <module>openapi-order</module>
         <module>openapi-warehouse</module>
         <module>tx-manager</module>
+        <module>openapi-logindex</module>
     </modules>
 
 

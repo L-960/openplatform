@@ -50,7 +50,7 @@ public class AuthorController {
             String jwt = Jwts.builder()
                     //.setSubject("admin") // TODO 数据库表 设置当前的用户是谁,这里的任何信息都可以随便写,需要后续拿出来处理
                     .setIssuedAt(Date.from(now)) // 设置开始的有效期为当前服务器时间
-                    .setExpiration(Date.from(now.plusMillis(60000))) // 设置过期时间 1min
+                    .setExpiration(Date.from(now.plusMillis(60000*600))) // 设置过期时间 10h
                      // 可以随便内容,主要是键值对,可以在需要的地方拿出来
                     .claim("id", 1)
                     .claim("name", "吕星宇") // TODO 数据库表
@@ -64,8 +64,8 @@ public class AuthorController {
 
             // 更新redis缓存
             try {
-                // {key:TOKEN:admin ,value:token值} 所以我们的用户名字不能重复 或者在这里拼接uuid
-                cacheService.save2Redis(SystemParams.JWT_TOKEN_REDIS_PRE + user.getUsername(), jwt,60*1000);
+                // {key:TOKEN:admin ,value:token值} 所以我们的用户名字不能重复 或者在这里拼接uuid //有效期10小时 便于测试
+                cacheService.save2Redis(SystemParams.JWT_TOKEN_REDIS_PRE + user.getUsername(), jwt,60*1000*600);
             } catch (Exception e) {
                 e.printStackTrace();
             }

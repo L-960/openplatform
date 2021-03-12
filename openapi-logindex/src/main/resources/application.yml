@@ -1,0 +1,30 @@
+server:
+  port: 38000
+spring:
+  rabbitmq:
+    host: 192.168.31.181
+    port: 5672
+    virtual-host: /test
+    username: test
+    password: test
+  data:
+    elasticsearch:
+      # 自定义es配置
+      host: 192.168.31.181
+      port: 9200
+      # 连接超时时间
+      connectionTimeOut: 5000
+      socketTimeOut: 5000
+      connectionRequestTimeOut: 5000
+      maxConnectNum: 100
+      maxConnectNumPerRoute: 100
+      # 索引
+      index: openapi-log-index
+      # 类型
+      type: openapi-log-type
+  application:
+    name: openapi-logindex
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20000/eureka
